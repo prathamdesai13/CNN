@@ -35,6 +35,12 @@ def run(learning_rate, iterations, split_size):
 
     NEURALNETWORK = NeuralNetwork(LAYERS)
     NEURALNETWORK.train(inputs, labels, learning_rate, iterations, split_size)
+    
+    kernels_firstlayer = convLayer1.kernels
+    kernel = convLayer2.kernels
+    weights = hiddenLayer.weights
+    bias = hiddenLayer.bias
+    print("Second kernel shape:", kernel.shape)
 
     t2 = time.time()
 
