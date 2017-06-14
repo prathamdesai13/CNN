@@ -3,8 +3,6 @@ Neural network for CNN
 """
 import OneHot as onehot
 import numpy as np
-import matplotlib.pyplot as plt
-import random
 
 
 class NeuralNetwork:
@@ -16,8 +14,8 @@ class NeuralNetwork:
     def train(self, inputs, labels, learning_rate, iterations, split_size):
         N = labels.shape[0]
         batches = N // split_size
-        one_hot_labels = onehot.one_hot(labels)
 
+        one_hot_labels = onehot.one_hot(labels)
         for iter in range(iterations):
 
             for mini_batch in range(batches):
@@ -25,14 +23,6 @@ class NeuralNetwork:
                 input_vector_batch = inputs[mini_batch * split_size: split_size * (mini_batch + 1)]
                 labels_batch = one_hot_labels[mini_batch * split_size: split_size * (mini_batch + 1)]
 
-                tuple = []
-                for i in range(input_vector_batch.shape[0]):
-                    tuple.append((input_vector_batch[i], labels_batch[i]))
-
-                random.shuffle(tuple)
-                for i in range(len(tuple)):
-                    input_vector_batch[i] = tuple[i][0]
-                    labels_batch[i] = tuple[i][1]
                 input_vector = input_vector_batch
 
                 # count = -1
@@ -56,22 +46,10 @@ class NeuralNetwork:
                     layer.update_parameters(learning_rate)
 
                 net_loss = self.layers[-1].loss(output_vector_prediction, labels_batch)
-                if mini_batch % 10 == 0:
+                if mini_batch % 1 == 0:
                     print('iteration %i, loss %.9f, minibatch %i' % (iter, net_loss, mini_batch))
 
                 learning_rate = learning_rate * (learning_rate / (learning_rate + (learning_rate * 0.01)))
-
-    def plot_mnist_digit(self, image1):
-        fig = plt.figure()
-        ax = fig.add_subplot(2, 2, 1)
-        ax.matshow(image1, cmap=plt.get_cmap('Greys'))
-        ax = fig.add_subplot(2, 2, 2)
-        ax.matshow(image1, cmap=plt.get_cmap('Greys'))
-        ax = fig.add_subplot(2, 2, 3)
-        ax.matshow(image1, cmap=plt.get_cmap('Greys'))
-        ax = fig.add_subplot(2, 2, 4)
-        ax.matshow(image1, cmap=plt.get_cmap('Greys'))
-        plt.show()
 
     def predict(self, input_vector):
 
