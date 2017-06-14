@@ -11,9 +11,9 @@ def initialize():
     data = sk.fetch_mldata('MNIST original', data_home='./MNIST')
 
     split = 60000
-    inputs = np.reshape(data.data[:split], (-1, 1, 28, 28)).astype(np.uint64)
+    inputs = np.reshape(data.data[:split], (-1, 1, 28, 28))
     labels = data.target[:split]
-    validation_inputs = np.reshape(data.data[split:], (-1, 1, 28, 28)).astype(np.uint64)
+    validation_inputs = np.reshape(data.data[split:], (-1, 1, 28, 28))
     validations_labels = data.target[split:]
     num_classes = np.unique(labels).shape[0]
 
