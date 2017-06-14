@@ -38,13 +38,12 @@ def run(learning_rate, iterations, split_size):
 
     t2 = time.time()
 
-    accuracy, error = NEURALNETWORK.accuracy(validation_inputs, validation_labels)
+    accuracy = NEURALNETWORK.accuracy(validation_inputs, validation_labels)
 
     t3 = time.time()
 
-    print('Accuracy: %f' % accuracy)
-    print('Error: %f' % error)
-    print(error + accuracy)
+    print("Number of correct predictions:")
+    print(accuracy)
     print('Duration: %.1fs' % (t2 - t1))
     print('Duration: %.1fs' % (t3 - t2))
 
