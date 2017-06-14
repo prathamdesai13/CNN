@@ -61,12 +61,14 @@ class NeuralNetwork:
     def accuracy(self, input_vector, labels):
 
         prediction = self.predict(input_vector)
+        count = 0
+        for i in range(prediction.shape[0]):
+            sub_count = 0
+            for j in range(prediction.shape[1]):
+                if prediction[i, j] == labels[i, j]:
+                    sub_count += 1
+            count += sub_count // 10
 
-        acc = np.array([(prediction == labels)])
-        acc_sum = np.sum(acc)
-        N = input_vector.shape[0]
-        avg_acc = acc_sum / N
-
-        return avg_acc
+        return count
 
 
