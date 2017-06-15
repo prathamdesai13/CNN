@@ -50,8 +50,8 @@ def run(learning_rate, iterations, split_size):
 
     print("Number of correct predictions:")
     print(accuracy)
-    print('Duration: %.1fs' % (t2 - t1))
-    print('Duration: %.1fs' % (t3 - t2))
+    print('Time to train: %.1fs' % (t2 - t1))
+    print('Time to test accuracy: %.1fs' % (t3 - t2))
 
 
 
