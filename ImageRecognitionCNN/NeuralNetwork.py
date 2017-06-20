@@ -3,6 +3,7 @@ Neural network for CNN
 """
 import OneHot as onehot
 import numpy as np
+import matplotlib.pyplot as plt
 
 
 class NeuralNetwork:
@@ -13,8 +14,9 @@ class NeuralNetwork:
 
     def train(self, inputs, labels, learning_rate, iterations, split_size):
         N = labels.shape[0]
+        N = 2000
         batches = N // split_size
-
+        loss = []
         one_hot_labels = onehot.one_hot(labels)
         for iter in range(iterations):
 
@@ -33,10 +35,11 @@ class NeuralNetwork:
                     # print(input_vector.shape)
 
                 output_vector_prediction = input_vector
-                output_gradient = self.layers[-1].gradient(output_vector_prediction, labels_batch)
+                self.layers[-1].gradient(output_vector_prediction, labels_batch)
 
                 # count = 9
-                for layer in reversed(self.layers[:-1]):
+                output_gradient = 1
+                for layer in reversed(self.layers):
                     output_gradient = layer.backwards_pass(output_gradient)
                     # count = count + 1
                     # print(count)
@@ -46,16 +49,20 @@ class NeuralNetwork:
                     layer.update_parameters(learning_rate)
 
                 net_loss = self.layers[-1].loss(output_vector_prediction, labels_batch)
-                if mini_batch % 1 == 0:
+                loss.append(net_loss)
+                if mini_batch % 10 == 0:
                     print('iteration %i, loss %.9f, minibatch %i' % (iter, net_loss, mini_batch))
+            #learning_rate = learning_rate * (learning_rate / (learning_rate + (learning_rate * 0.01)))
 
-                learning_rate = learning_rate * (learning_rate / (learning_rate + (learning_rate * 0.01)))
+        plt.plot(loss)
+        plt.show()
 
     def predict(self, input_vector):
-
+        print("Starting predictions")
+        count = 0
         for layer in self.layers:
             input_vector = layer.forwards_pass(input_vector)
-
+            count = count + 1
         return input_vector
 
     def accuracy(self, input_vector, labels):
@@ -63,12 +70,25 @@ class NeuralNetwork:
         prediction = self.predict(input_vector)
         count = 0
         for i in range(prediction.shape[0]):
-            sub_count = 0
-            for j in range(prediction.shape[1]):
-                if prediction[i, j] == labels[i, j]:
-                    sub_count += 1
-            count += sub_count // 10
+            print(i)
+            print(prediction[i])
+            print(labels[i])
+            if np.array_equal(prediction[i], labels[i]):
+                count = count + 1
+            print("\n")
 
         return count
 
+    def another_accuracy(self, input_vector, labels):
+        prediction = self.predict(input_vector)
+
+        print(prediction[5])
+        print(labels[5])
+        pred_indices = [np.argmax(prediction, axis=1)]
+        label_indices = [np.argmax(labels, axis=1)]
+        count = 0
+        for i in range(len(pred_indices[0])):
+            if pred_indices[0][i] == label_indices[0][i]:
+                count = count + 1
+        return count
 
