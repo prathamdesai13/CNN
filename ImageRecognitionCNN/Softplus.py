@@ -1,15 +1,11 @@
 """
 Softplus activations function
 """
-
-"""
-ReLU for convolutions in CNN
-"""
 import numpy as np
 from Layer import Layer
 
 
-class ReLU(Layer):
+class Softplus(Layer):
 
     def __init__(self):
 
