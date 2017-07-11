@@ -1,17 +1,18 @@
+
 """
 Softplus activations function
 """
 import numpy as np
 from Layer import Layer
-
+import scipy.special as spl
 
 class Softplus(Layer):
 
     def __init__(self):
 
         self.input = None
-        
-    def forwards_pass(self, input_vector):
+
+    def forwards_pass(self, input_vector, bool):
         self.input = input_vector
         unit = np.log(1 + np.exp(self.input))
         return unit
@@ -27,6 +28,6 @@ class Softplus(Layer):
 
     def softplus_gradient(self, input):
 
-        dx = 1.0 / (1.0 + np.exp(-input))
+        dx = spl.expit(input)
 
         return dx
