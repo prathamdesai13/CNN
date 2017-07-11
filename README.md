@@ -1,2 +1,2 @@
 # MNIST-CNN-Classifier
-Classifies handwritten digits using convolutional networks
+MNIST Classifier using a convolutional neural network
