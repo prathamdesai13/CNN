@@ -31,6 +31,6 @@ class ReLU(Layer):
 
         dx = np.zeros(input.shape)
 
-        dx[input >= 0] = 1
+        dx[input > 0] = 1
 
         return dx
