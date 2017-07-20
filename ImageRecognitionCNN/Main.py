@@ -21,6 +21,11 @@ def run(learning_rate, iterations, split_size, downsample_size):
     labels = onehot.one_hot(labels)
     validation_labels = onehot.one_hot(validation_labels)
 
+    x = inputs
+    y = labels
+    xt = validation_inputs
+    yt = validation_labels
+
     conv1 = ConvolutionLayer(32, 5, 1)
     pool1 = PoolingLayer([2, 2], 2)
     conv2 = ConvolutionLayer(16, 5, 1)
@@ -44,6 +49,7 @@ def run(learning_rate, iterations, split_size, downsample_size):
     t1 = time.time()
 
     NEURALNETWORK = NeuralNetwork(LAYERS)
+
     NEURALNETWORK.train(inputs, labels, learning_rate, iterations, split_size, downsample_size)
 
     weight1 = hiddenLayer.weights
@@ -56,31 +62,29 @@ def run(learning_rate, iterations, split_size, downsample_size):
     #np.savetxt('WEIGHTS2', weight2)
     #np.savetxt('BIAS2', bias2)
 
-    x = inputs
-    y = labels
-    xt = validation_inputs
-    yt = validation_labels
+
 
     t2 = time.time()
     print('Training time: %.1fs' % (t2 - t1))
 
-    training_accuracy = NEURALNETWORK.accuracy(x, y)
-    validation_accuracy = NEURALNETWORK.accuracy(xt, yt)
+    #training_accuracy = NEURALNETWORK.accuracy(x, y)
+    #validation_accuracy = NEURALNETWORK.accuracy(xt, yt)
 
-    print("Training accuracy:", training_accuracy / x.shape[0])
-    print("Validation accuracy:", validation_accuracy / xt.shape[0])
+    #print("Training accuracy:", training_accuracy / x.shape[0])
+    #print("Validation accuracy:", validation_accuracy / xt.shape[0])
 
     NEURALNETWORK.plot()
+    digit = xt[8]
+    digit_label = yt[8]
+    pred = NEURALNETWORK.predict(digit.reshape((1, 1, 28, 28)))
+    print(pred)
+    print(digit_label)
 
     list = [weight1[i].reshape((28, 28)) for i in range(10)]
     plot_mnist_digits(list)
 
 
-    #digit = xt[8].reshape((xt[8].shape[1], xt[8].shape[2]))
-    #digit_label = yt[8]
-    #plot_mnist_digits([digit])
 
-    #print(digit_label)
 
 
 
@@ -115,7 +119,7 @@ def load_random_digit(file):
 
 if __name__ == "__main__":
 
-    learning_rate = 1e-3
+    learning_rate = 3e-3
     iterations = 1
     split_size = 32
     downsample_size = 1
