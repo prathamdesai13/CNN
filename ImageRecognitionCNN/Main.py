@@ -116,7 +116,7 @@ def load_random_digit(file):
 if __name__ == "__main__":
 
     learning_rate = 1e-3
-    iterations = 3
+    iterations = 1
     split_size = 32
     downsample_size = 1
     run(learning_rate, iterations, split_size, downsample_size)
