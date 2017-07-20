@@ -26,10 +26,10 @@ class ConvolutionLayer(Layer):
 
     def forwards_pass(self, input_vector, bool):
         self.input_vector = input_vector
-        self.N = input_vector.shape[0]
-        self.D = input_vector.shape[1]
-        self.W = input_vector.shape[2]
-        self.H = input_vector.shape[3]
+        self.N = self.input_vector.shape[0]
+        self.D = self.input_vector.shape[1]
+        self.W = self.input_vector.shape[2]
+        self.H = self.input_vector.shape[3]
         if bool == True:
             self.kernels = np.random.random((self.D, self.K, self.F, self.F))
 

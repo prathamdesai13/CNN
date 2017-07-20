@@ -21,21 +21,40 @@ def run(learning_rate, iterations, split_size, downsample_size):
     labels = onehot.one_hot(labels)
     validation_labels = onehot.one_hot(validation_labels)
 
-    reluLayer1 = ReLU()
-    reluLayer2 = ReLU()
+    conv1 = ConvolutionLayer(32, 5, 1)
+    pool1 = PoolingLayer([2, 2], 2)
+    conv2 = ConvolutionLayer(16, 5, 1)
+    pool2 = PoolingLayer([2, 2], 2)
+    relu1 = ReLU()
+    relu2 = ReLU()
+    relu3 = ReLU()
+
 
     vectorizeLayer = Vectorize()
-    hiddenLayer = HiddenLayer(150, 784)
-    hiddenLayer2 = HiddenLayer(75, 150)
-    hiddenLayer3 = HiddenLayer(10, 75)
+    hiddenLayer = HiddenLayer(100, 4608)
+    hiddenLayer2 = HiddenLayer(10, 100)
     finalLayer = FinalLayer()
 
-    LAYERS = [vectorizeLayer, hiddenLayer, reluLayer1, hiddenLayer2, reluLayer2, hiddenLayer3, finalLayer]
+    LAYERS = [conv1, pool1, relu1,
+              vectorizeLayer,
+              hiddenLayer, relu3,
+              hiddenLayer2,
+              finalLayer]
 
     t1 = time.time()
 
     NEURALNETWORK = NeuralNetwork(LAYERS)
     NEURALNETWORK.train(inputs, labels, learning_rate, iterations, split_size, downsample_size)
+
+    weight1 = hiddenLayer.weights
+    #bias1 = hiddenLayer.bias
+    #weight2 = hiddenLayer2.weights
+    #bias2 = hiddenLayer2.bias
+
+    #np.savetxt('WEIGHTS1', weight1)
+    #np.savetxt('BIAS1', bias1)
+    #np.savetxt('WEIGHTS2', weight2)
+    #np.savetxt('BIAS2', bias2)
 
     x = inputs
     y = labels
@@ -53,6 +72,17 @@ def run(learning_rate, iterations, split_size, downsample_size):
 
     NEURALNETWORK.plot()
 
+    list = [weight1[i].reshape((28, 28)) for i in range(10)]
+    plot_mnist_digits(list)
+
+
+    #digit = xt[8].reshape((xt[8].shape[1], xt[8].shape[2]))
+    #digit_label = yt[8]
+    #plot_mnist_digits([digit])
+
+    #print(digit_label)
+
+
 
 def plot_mnist_digits(images):
     images_len = len(images)
@@ -66,7 +96,7 @@ def plot_mnist_digits(images):
     for i in range(images_len):
         ax = fig.add_subplot(plot_sizes[0], plot_sizes[1], i+1)
         ax.axis('off')
-        ax.matshow(images[i], cmap=plt.get_cmap("Greys"))
+        ax.matshow(images[i], cmap=plt.get_cmap('Greys'))
 
     plt.show()
 
@@ -76,9 +106,8 @@ def load_random_digit(file):
     img = Image.open(file)
     img.load()
     data = np.array(img, dtype="int32")
-
-    digit = data[:, :, 0]
-    digit = np.reshape(digit, (1, 1, digit.shape[0], digit.shape[1])) / 255.0
+    data = data[:, :, 0]
+    digit = np.reshape(data, (1, 1, data.shape[0], data.shape[1])) / 255.0
     return digit
 
 
@@ -86,10 +115,10 @@ def load_random_digit(file):
 
 if __name__ == "__main__":
 
-    learning_rate = 1e-1
+    learning_rate = 1e-3
     iterations = 3
-    split_size = 50
-    downsample_size = 3
+    split_size = 32
+    downsample_size = 1
     run(learning_rate, iterations, split_size, downsample_size)
 
 

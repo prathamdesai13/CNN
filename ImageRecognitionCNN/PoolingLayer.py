@@ -24,7 +24,7 @@ class PoolingLayer(Layer):
         self.output_height = None
         self.max_indices = None
 
-    def forwards_pass(self, input_vector):
+    def forwards_pass(self, input_vector, bool):
 
         self.input_vector = input_vector
         self.N = self.input_vector.shape[0]
@@ -43,13 +43,15 @@ class PoolingLayer(Layer):
                         w_move = w * self.S
                         h_move = h * self.S
 
-                        patch = self.input_vector[n, filter, w_move:w_move + self.window_width, h_move:h_move + self.output_height]
+                        patch = self.input_vector[n, filter, w_move:w_move + self.window_width, h_move:h_move + self.window_height]
                         max_patch_value = np.max(patch)
                         location = list(zip(*np.where(max_patch_value == patch)))
-                        location = (location[0][0] + self.S, location[0][1] + self.S)
+                        location = (location[0][0] + self.S - 1, location[0][1] + self.S - 1)
                         self.max_indices[n, filter, w, h, 0] = location[0]
                         self.max_indices[n, filter, w, h, 1] = location[1]
                         max_pool[n, filter, w, h] = max_patch_value
+
+        #print(max_pool.shape, "Max pool shape")
         return max_pool
 
     def backwards_pass(self, max_pool_gradient):

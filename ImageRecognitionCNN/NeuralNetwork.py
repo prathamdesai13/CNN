@@ -4,7 +4,6 @@ Neural network for CNN
 
 import numpy as np
 import matplotlib.pyplot as plt
-from InitializeData import randomize
 
 class NeuralNetwork:
 
@@ -12,15 +11,17 @@ class NeuralNetwork:
 
         self.layers = layers
         self.losses = []
+
     def train(self, inputs, labels, learning_rate, iterations, split_size, downsample_size):
 
         N = labels.shape[0] // downsample_size
         bool = True
+        print(N)
         batches = N // split_size
         count = 0
 
         for iter in range(iterations):
-            randomize(inputs, labels)
+
             for mini_batch in range(batches):
 
                 input_vector_batch = inputs[mini_batch * split_size: split_size * (mini_batch + 1)]
@@ -38,7 +39,7 @@ class NeuralNetwork:
                     # count += 1
                     # print(count)
                     # print(input_vector.shape)
-                count = 1
+
                 output_vector_prediction = input_vector
                 self.layers[-1].gradient(output_vector_prediction, labels_batch)
 
@@ -55,7 +56,8 @@ class NeuralNetwork:
 
                 net_loss = self.layers[-1].loss(output_vector_prediction, labels_batch)
                 self.losses.append(net_loss)
-                if mini_batch % 10 == 0:
+                count = 1
+                if mini_batch % 1 == 0:
                     print('iteration %i, loss %.9f, minibatch %i' % (iter, net_loss, mini_batch))
                 #learning_rate = learning_rate * (learning_rate / (learning_rate + (learning_rate * 0.01)))
             #learning_rate *= 0.99

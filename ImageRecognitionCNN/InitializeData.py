@@ -17,16 +17,17 @@ def initialize():
     validations_labels = data.target[N:]
 
     num_classes = np.unique(labels).shape[0]
+    num_samples = 3000
 
-    inputs, labels = randomize(inputs, labels)
-    validation_inputs, validations_labels = randomize(validation_inputs, validations_labels)
+    inputs, labels = randomize(inputs, labels, num_samples)
+    validation_inputs, validations_labels = randomize(validation_inputs, validations_labels, num_samples)
 
     return inputs, labels, validation_inputs, validations_labels, num_classes
 
-def randomize(x, y):
+def randomize(x, y, k):
 
     N = x.shape[0]
-    random_indices = np.random.random_integers(0, N - 1, N)
+    random_indices = np.random.random_integers(0, N - 1, k)
     x = x[random_indices, ...]
     y = y[random_indices, ...]
 
