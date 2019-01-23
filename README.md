@@ -1,2 +1,1 @@
-# MNIST-CNN-Classifier
-MNIST Classifier using a convolutional neural network
+While learning about neural nets, I thought that the best way to understand it all is to build its fundamentals, and so this repo is a collection of layers that can be used to build neural nets to solve some tasks. Easy to read code that can be used to understand how each layer's forward pass and backward pass works.
